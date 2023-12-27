@@ -41,7 +41,8 @@ namespace ParserV2
 
         public void Scan(string inputText)
         {
-
+            inputText = inputText.Replace(Environment.NewLine, " ");
+            inputText += " ";
             string token = "";
 
             foreach (char c in inputText)
@@ -234,7 +235,7 @@ namespace ParserV2
         private bool IsComment(string token)
         {
             // return MyRegex().IsMatch(token);
-            return true;
+            return false;
         }
 
         private string ReadFile(string fileName)

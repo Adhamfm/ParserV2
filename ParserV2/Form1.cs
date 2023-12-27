@@ -78,9 +78,18 @@ namespace ParserV2
                 Console.WriteLine("Parsing failed: " + ex.Message);
             }
             //MeDraw(nodes);
-            drawTest(nodes);
+            try
+            {
+                drawTest(nodes);
+            } catch (Exception ex)
+            {
+                ShowErrorDialog("Incorrect Grammar", "Input is wrong, check your input \r\n " + ex.Message);
+            }
         }
-
+        private void ShowErrorDialog(string title, string message)
+        {
+            MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
         public void drawTest(List<Node> x)
         {
             int temp;
@@ -210,14 +219,22 @@ namespace ParserV2
                         rightNode1.yleftCorner = levelY1;
                         g.DrawString(str, font, Brushes.Black, localX + 5, levelY1 + 5);
                         // Level 2 Right
-                        recDraw(g, rightNode1.left);
-                        recDrawMiddle(g, rightNode1.middle);
-                        recDrawRight(g, rightNode1.right);
-                        globalX += 150;
+                        try
+                        {
+
+                            recDraw(g, rightNode1.left);
+                            recDrawMiddle(g, rightNode1.middle);
+                            recDrawRight(g, rightNode1.right);
+                            globalX += 150;
+                        } catch (Exception ex)
+                        {
+                            ShowErrorDialog("Incorrect Grammar", ex.Message);
+                        }
                     }
                 }
                 globalX += 200;
             }
+
             DrawLines(g, nodes);
             return result;
         }
@@ -333,6 +350,11 @@ namespace ParserV2
             if (nodes == null) return;
             foreach (Node node in nodes)
             {
+                if (node == null)
+                {
+                    //ShowErrorDialog("An error occurred", "sad");
+                    //return;
+                }
                 int localX2 = globalX;
                 if (globalX > 50)
                     localX2 = globalX;
